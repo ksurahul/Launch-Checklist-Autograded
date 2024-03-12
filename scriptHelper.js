@@ -2,18 +2,20 @@
 require('cross-fetch/polyfill');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
+
+    const missionTarget = document.getElementById("missionTarget");
+
     // Here is the HTML formatting for our mission target div.
-    /*
+    missionTarget.innerHTML = `
                  <h2>Mission Destination</h2>
                  <ol>
-                     <li>Name: </li>
-                     <li>Diameter: </li>
+                     <li>Name: ${name}</li>
+                     <li>Diameter: ${diameter}</li>
                      <li>Star: ${star}</li>
-                     <li>Distance from Earth: </li>
-                     <li>Number of Moons: </li>
+                     <li>Distance from Earth: ${distance}</li>
+                     <li>Number of Moons: ${moons}</li>
                  </ol>
-                 <img src="">
-    */
+                 <img src="${imageUrl}">`;
  }
  
 
@@ -32,19 +34,19 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
     // first three if statements are validating fields - no point in running rest of code if these do not pass
 
     // make sure all inputs are not empty
-    if (validateInput(pilot.value) === "Empty" || validateInput(copilot.value) === "Empty" || validateInput(fuelLevel.value) === "Empty" || validateInput(cargoLevel.value) === "Empty") {
+    if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoLevel) === "Empty") {
         //alert("All fields are required!");
         return
     }
 
     // make sure pilot & copilot are strings
-    if (validateInput(pilot.value) === "Is a Number" || validateInput(copilot.value) === "Is a Number") {
+    if (validateInput(pilot) === "Is a Number" || validateInput(copilot) === "Is a Number") {
         //alert("Pilot AND copilot inputs must be strings");
         return
     } 
 
     // make sure fuelLevel & cargoLevel inputs are numbers
-    if (validateInput(fuelLevel.value) === "Not a Number" || validateInput(cargoLevel.value) === "Not a Number") {
+    if (validateInput(fuelLevel) === "Not a Number" || validateInput(cargoLevel) === "Not a Number") {
         //alert("Fuel AND cargo level must be number inputs");
         return
     }
@@ -57,11 +59,11 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
     const launchStatus = document.getElementById("launchStatus");
 
     // after validation, pilot info text should change
-    pilotStatus.innerHTML = `Pilot ${pilot.value} is ready for launch`
-    copilotStatus.innerHTML = `Co-pilot ${copilot.value} is ready for launch`
+    pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`
+    copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`
 
     // update fuelStatus depending on fuelLevel input
-    if (fuelLevel.value < 10000) {
+    if (fuelLevel < 10000) {
         list.style.visibility = "visible";
         fuelStatus.innerHTML = "Fuel level too low for launch";
         launchStatus.innerHTML = "Shuttle Not Ready for Launch";
@@ -82,22 +84,23 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
 
     // if every field passes all above checks, should be ready to launch
     if (fuelStatus.innerHTML === `Fuel level high enough for launch` && cargoStatus.innerHTML === `Cargo mass low enough for launch`) {
-        list.style.visibility = `hidden`;
+        list.style.visibility = `visible`;
         launchStatus.innerHTML = `Shuttle is Ready for Launch`;
         launchStatus.style.color = `green`;
     } 
  }
- 
+
  async function myFetch() {
-     let planetsReturned;
- 
-     planetsReturned = await fetch().then( function(response) {
-         });
- 
-     return planetsReturned;
+    let planetsReturned;
+    // this is what chatgpt is saying to use. why does this work and above doesnt?
+    const response = await fetch("https://handlers.education.launchcode.org/static/planets.json")
+    planetsReturned = await response.json();
+    return planetsReturned;
  }
  
  function pickPlanet(planets) {
+    let index = Math.floor(Math.random() * planets.length);
+    return planets[index];
  }
  
  module.exports.addDestinationInfo = addDestinationInfo;

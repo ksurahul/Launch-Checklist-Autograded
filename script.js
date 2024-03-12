@@ -1,17 +1,23 @@
 // Write your JavaScript code here!
 
-window.addEventListener("load", function() {
+const { myFetch, pickPlanet, addDestinationInfo } = require('./scriptHelper');
 
-    let listedPlanets;
-    // Set listedPlanetsResponse equal to the value returned by calling myFetch()
-    // let listedPlanetsResponse;
-    // listedPlanetsResponse.then(function (result) {
-    //     listedPlanets = result;
-    //     console.log(listedPlanets);
-    // }).then(function () {
-    //     console.log(listedPlanets);
-    //     // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
-    // })
+window.addEventListener("load", function() {
+    myFetch().then(function (listedPlanets) {
+        console.log(listedPlanets);
+        // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
+        const planet = pickPlanet(listedPlanets);
+        
+        addDestinationInfo(
+            document,
+            planet.name,
+            planet.diameter,
+            planet.star,
+            planet.distance,
+            planet.moon,
+            planet.image
+        )
+    })
 
     const button = document.getElementById("formSubmit");
     
@@ -20,10 +26,10 @@ window.addEventListener("load", function() {
         formSubmission(
             document,
             document.getElementById("faultyItems"),
-            document.querySelector("input[name=pilotName]"),
-            document.querySelector("input[name=copilotName]"),
-            document.querySelector("input[name=fuelLevel]"),
-            document.querySelector("input[name=cargoMass]"),
+            document.querySelector("input[name=pilotName]").value,
+            document.querySelector("input[name=copilotName]").value,
+            document.querySelector("input[name=fuelLevel]").value,
+            document.querySelector("input[name=cargoMass]").value,
         )
     });
  });
