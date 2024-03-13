@@ -35,19 +35,19 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
 
     // make sure all inputs are not empty
     if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoLevel) === "Empty") {
-        alert("All fields are required!");
+        //alert("All fields are required!");
         return
     }
 
     // make sure pilot & copilot are strings
     if (validateInput(pilot) === "Is a Number" || validateInput(copilot) === "Is a Number") {
-        alert("Pilot AND copilot inputs must be strings");
+        //alert("Pilot AND copilot inputs must be strings");
         return
     } 
 
     // make sure fuelLevel & cargoLevel inputs are numbers
     if (validateInput(fuelLevel) === "Not a Number" || validateInput(cargoLevel) === "Not a Number") {
-        alert("Fuel AND cargo level must be number inputs");
+        //alert("Fuel AND cargo level must be number inputs");
         return
     }
     
